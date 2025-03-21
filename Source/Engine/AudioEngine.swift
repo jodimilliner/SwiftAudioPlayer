@@ -39,7 +39,7 @@ protocol AudioEngineDelegate: AnyObject {
     func didError()
 }
 
-class AudioEngine: AudioEngineProtocol {
+public class AudioEngine: AudioEngineProtocol {
     weak var delegate:AudioEngineDelegate?
     var key:Key
     

@@ -44,8 +44,9 @@ public class SAPlayer {
     
     private var presenter: SAPlayerPresenter!
     public var player: AudioEngine?
+    public var streamer: AudioStreamEngine?
     public var buffers: [RMSBuffer]{ 
-	    if let player as? AudioStreamEngine{ return player.buffers }
+	    if let buffers = streamer?.buffers { return buffers }
 	    else{ return [] }
     }
     /**
@@ -561,7 +562,8 @@ extension SAPlayer: SAPlayerDelegate {
     }
     
     internal func startAudioStreamed(withRemoteUrl url: AudioURL, bitrate: SAPlayerBitrate) {
-        player = AudioStreamEngine(withRemoteUrl: url, delegate: presenter, bitrate: bitrate)
+        streamer = AudioStreamEngine(withRemoteUrl: url, delegate: presenter, bitrate: bitrate)
+	player = streamer
     }
     
     internal func clearEngine() {

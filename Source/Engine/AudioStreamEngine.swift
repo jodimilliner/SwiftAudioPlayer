@@ -35,8 +35,8 @@ import Accelerate
 
 public struct RMSBuffer: Identifiable{
    public let id = UUID()
-   let buffer: AVAudioPCMBuffer
-   let rms: Float
+   public let buffer: AVAudioPCMBuffer
+   public let rms: Float
 }
 
 /**

@@ -44,7 +44,10 @@ public class SAPlayer {
     
     private var presenter: SAPlayerPresenter!
     public var player: AudioEngine?
-    
+    public var buffers: [RMSBuffer]{ 
+	    if let player as? AudioStreamEngine{ return player.buffers }
+	    else{ return [] }
+    }
     /**
     Any necessary header fields for streaming and downloading requests can be set here.
     */

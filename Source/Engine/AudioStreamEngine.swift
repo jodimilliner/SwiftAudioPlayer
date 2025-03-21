@@ -34,7 +34,7 @@ import AVFoundation
 import Accelerate
 
 public struct RMSBuffer: Identifiable{
-   let id = UUID()
+   public let id = UUID()
    let buffer: AVAudioPCMBuffer
    let rms: Float
 }
@@ -62,7 +62,7 @@ public struct RMSBuffer: Identifiable{
  HANDLE PLAYING. Ensure the engine is in the correct state when playing,
  pausing, or seeking
  */
-class AudioStreamEngine: AudioEngine {
+public class AudioStreamEngine: AudioEngine {
     //Constants
     private let MAX_POLL_BUFFER_COUNT = 300 //Having one buffer in engine at a time is choppy.
     private let MIN_BUFFERS_TO_BE_PLAYABLE = 1

@@ -33,7 +33,7 @@ import Foundation
 import AVFoundation
 import Accelerate
 
-struct RMSBuffer: Identifiable{
+public struct RMSBuffer: Identifiable{
    let id = UUID()
    let buffer: AVAudioPCMBuffer
    let rms: Float

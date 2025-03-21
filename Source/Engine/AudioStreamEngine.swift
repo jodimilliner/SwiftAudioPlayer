@@ -75,7 +75,7 @@ class AudioStreamEngine: AudioEngine {
     
     //Fields
     private var currentTimeOffset: TimeInterval = 0
-    public var buffers = [Float]()
+    public var buffers = [RMSBuffer]()
 
     public var streamChangeListenerId: UInt?
     
@@ -238,7 +238,7 @@ class AudioStreamEngine: AudioEngine {
             
             Log.debug("processed buffer for engine of frame length \(nextScheduledBuffer.frameLength)")
             queue.async { [weak self] in
-                self.buffers.append(RMSBuffer(buffer: nextScheduledBuffer, rms: averageRMS(nextScheduledBuffer)))
+                self.buffers.append(RMSBuffer(buffer: nextScheduledBuffer!, rms: averageRMS(nextScheduledBuffer)))
                 if #available(iOS 11.0, tvOS 11.0, *) {
                     // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in

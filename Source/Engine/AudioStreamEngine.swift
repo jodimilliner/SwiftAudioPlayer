@@ -153,12 +153,12 @@ public class AudioStreamEngine: AudioEngine {
         Log.info(url)
         super.init(url: url, delegate: delegate, engineAudioFormat: AudioEngine.defaultEngineAudioFormat)
         
-        switch bitrate {
-        case .high:
-            PCM_BUFFER_SIZE = 8192
-        case .low:
-            PCM_BUFFER_SIZE = 4096
-        }
+        // switch bitrate {
+        // case .high:
+        //     PCM_BUFFER_SIZE = 8192
+        // case .low:
+        //     PCM_BUFFER_SIZE = 4096
+        // }
         
         do {
             converter = try AudioConverter(withRemoteUrl: url, toEngineAudioFormat: AudioEngine.defaultEngineAudioFormat, withPCMBufferSize: PCM_BUFFER_SIZE)

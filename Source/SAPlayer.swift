@@ -43,7 +43,7 @@ public class SAPlayer {
     public static let shared: SAPlayer = SAPlayer()
     
     private var presenter: SAPlayerPresenter!
-    var player: AudioEngine?
+    public var player: AudioEngine?
     
     /**
     Any necessary header fields for streaming and downloading requests can be set here.

@@ -31,6 +31,7 @@
 
 import Foundation
 import AVFoundation
+import Accelerate
 
 /**
  Start of the streaming chain. Get PCM buffer from lower chain and feed it to
@@ -68,7 +69,9 @@ class AudioStreamEngine: AudioEngine {
     
     //Fields
     private var currentTimeOffset: TimeInterval = 0
-    private var streamChangeListenerId: UInt?
+    public var bufferRMS = [Float]()
+
+    public var streamChangeListenerId: UInt?
     
     private var numberOfBuffersScheduledInTotal = 0 {
         didSet {
@@ -192,6 +195,25 @@ class AudioStreamEngine: AudioEngine {
     }
     
     //MARK:- Timer loop
+
+     func averageRMS(_ buffer: AVAudioPCMBuffer) -> Float {
+        guard let channelData = buffer.floatChannelData else {
+            return 0.0
+        }
+        
+        let frameLength = Int(buffer.frameLength)
+        let channelCount = Int(buffer.format.channelCount)
+        var totalRMS: Float = 0.0
+        
+        for channel in 0..<channelCount {
+            var rms: Float = 0.0
+            // Compute RMS for the current channel using vDSP_rmsqv.
+            vDSP_rmsqv(channelData[channel], 1, &rms, vDSP_Length(frameLength))
+            totalRMS += rms
+        }
+        
+        return totalRMS / Float(channelCount)
+    }
     
     //Called when
     //1. First time audio is finally parsed
@@ -210,6 +232,7 @@ class AudioStreamEngine: AudioEngine {
             
             Log.debug("processed buffer for engine of frame length \(nextScheduledBuffer.frameLength)")
             queue.async { [weak self] in
+                bufferRMS.append(averageRMS(nextScheduledBuffer))
                 if #available(iOS 11.0, tvOS 11.0, *) {
                     // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
                     self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in

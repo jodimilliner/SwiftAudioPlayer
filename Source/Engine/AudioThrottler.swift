@@ -44,7 +44,7 @@ class AudioThrottler: AudioThrottleable {
     let url: AudioURL
     weak var delegate: AudioThrottleDelegate?
     
-    private var networkData: [Data] = [] {
+    public var networkData: [Data] = [] {
         didSet {
 //            Log.test("NETWORK DATA \(networkData.count)")
         }
